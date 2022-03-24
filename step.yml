@@ -1,0 +1,98 @@
+title: |-
+  Connect to OpenVPN Server
+summary: |
+  Establish a VPN connection with the specified OpenVPN server and by using a username and a password for authentication.
+description: |
+  Before using this step, you need to build an OpenVPN server which requires username and password for authentication in advance.
+  This article is helpful for how to construct OpenVPN server.
+  https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-18-04
+
+website: https://github.com/Ninzai/bitrise-step-openvpn
+source_code_url: https://github.com/Ninzai/bitrise-step-openvpn
+support_url: https://github.com/Ninzai/bitrise-step-openvpn
+host_os_tags:
+  - osx-10.10
+  - ubuntu-20.04
+
+type_tags:
+  - access-control
+
+is_requires_admin_user: true
+is_always_run: false
+is_skippable: false
+run_if: ""
+
+deps:
+  brew:
+  - name: openvpn
+  apt_get:
+  - name: openvpn
+  - name: net-tools
+
+toolkit:
+  bash:
+    entry_file: step.sh
+
+inputs:
+  - host: "$VPN_HOST"
+    opts:
+      title: "Host"
+      summary: "Open VPN Server IP or Hostname"
+      description: "Open VPN Server IP or Hostname"
+      is_expand: true
+      is_required: true
+  - port: "$VPN_PORT"
+    opts:
+      title: "Port"
+      summary: "Open VPN Server Port number"
+      description: "The port number to connect to Open VPN Server"
+      is_expand: true
+      is_required: true
+  - proto: "$VPN_PROTO"
+    opts:
+      title: "Protocol"
+      summary: "Open VPN Server Protocol"
+      description: "The protocol to connect to Open VPN Server"
+      is_expand: true
+      is_required: true
+      value_options:
+        - udp
+        - tcp
+        - tcp-client
+  - user: "$VPN_USER"
+    opts:
+      title: "Username"
+      summary: "Username to get authorized for VPN server"
+      description: "Username to get authorized for VPN server"
+      is_required: true
+      is_expand: true
+      is_sensitive: true
+  - password: "$VPN_PASSWORD"
+    opts:
+      title: "Password"
+      summary: "Password to get authorized for VPN server"
+      description: "Password to get authorized for VPN server"
+      is_required: true
+      is_expand: true
+      is_sensitive: true
+  - ca_crt: "$VPN_CA_CRT_BASE64"
+    opts:
+      title: "Base64 encoded CA Certificate"
+      summary: "Base64 encoded CA Certificate"
+      is_expand: true
+      is_required: true
+      is_sensitive: true
+  - client_crt: "$VPN_CLIENT_CRT_BASE64"
+    opts:
+      title: "Base64 encoded Client Certificate"
+      summary: "Base64 encoded Client Certificate"
+      is_expand: true
+      is_required: true
+      is_sensitive: true
+  - client_key: "$VPN_CLIENT_KEY_BASE64"
+    opts:
+      title: "Base64 encoded Client Private Key"
+      summary: "Base64 encoded Client Private Key"
+      is_expand: true
+      is_required: true
+      is_sensitive: true
